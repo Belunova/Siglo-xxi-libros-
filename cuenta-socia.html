@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mi cuenta — Siglo XXI Libros</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#454340; --parchment:#f2ddc8; --burgundy:#8a3d33;
+    --paper-line:#d8bfa0; --panel:#fffaf0;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Inter',sans-serif; background:var(--parchment); color:var(--ink); }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  header{
+    background:var(--ink); color:var(--parchment); padding:20px 40px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+    border-bottom:3px solid var(--burgundy);
+  }
+  .logo{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:20px; letter-spacing:0.5px; }
+  .logo em{ color:#d8bfa0; font-style:normal; font-weight:400; }
+  nav{ display:flex; gap:28px; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+  nav span.active{ color:#d8bfa0; border-bottom:2px solid var(--burgundy); padding-bottom:4px; }
+  .header-actions{ display:flex; gap:16px; align-items:center; font-size:13px; }
+  .btn-ghost{ border:1px solid #d8bfa0; color:var(--parchment); padding:7px 16px; border-radius:2px; letter-spacing:0.5px; }
+
+  .page-head{ padding:34px 40px 10px; }
+  .page-head h1{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:26px; margin:0 0 4px; }
+  .page-head .sub{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--burgundy); }
+
+  .sub-tabs{ display:flex; gap:4px; padding:16px 40px 0; border-bottom:1px solid var(--paper-line); }
+  .sub-tab{ padding:11px 16px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.5px; color:#8a7d63; border-bottom:3px solid transparent; }
+  .sub-tab.active{ color:var(--burgundy); border-bottom-color:var(--burgundy); font-weight:600; }
+  .content{ padding:26px 40px 60px; }
+
+  .card{ background:var(--panel); border:1px solid var(--paper-line); padding:20px 22px; margin-bottom:20px; }
+  .card h3{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:14px; letter-spacing:0.5px; margin:0 0 14px; display:flex; justify-content:space-between; align-items:center; }
+  .badge{ background:var(--burgundy); color:#fff; font-size:11px; padding:4px 12px; border-radius:12px; font-family:'IBM Plex Mono', monospace; }
+
+  /* Chequera (talonario) */
+  .stub-row{ display:flex; overflow-x:auto; border-top:1px dashed var(--paper-line); padding-top:14px; }
+  .stub{ flex:0 0 auto; width:100px; padding:10px 8px; text-align:center; border-right:1px dashed var(--paper-line); }
+  .stub:last-child{ border-right:none; }
+  .stub-num{ font-family:'IBM Plex Mono', monospace; font-size:9px; color:var(--burgundy); margin-bottom:6px; }
+  .stub-icon{ width:28px; height:28px; margin:0 auto 6px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .stub.filled .stub-icon{ background:var(--burgundy); color:#fff; }
+  .stub.current .stub-icon{ background:#fff3e6; color:var(--burgundy); border:2px solid var(--burgundy); }
+  .stub.empty .stub-icon{ border:1.5px dashed var(--paper-line); color:var(--paper-line); }
+  .stub-title{ font-family:'IBM Plex Mono', monospace; font-size:9px; line-height:1.3; }
+
+  /* Sellos */
+  .sellos-dots{ display:flex; gap:8px; margin:6px 0 10px; }
+  .dot{ width:20px;height:20px;border-radius:50%; }
+  .dot.filled{ background:var(--burgundy); }
+  .dot.empty{ border:1.5px dashed var(--paper-line); }
+
+  /* Pedidos - timeline reutilizado */
+  .order-head{ display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px dashed var(--paper-line); margin-bottom:12px; flex-wrap:wrap; gap:6px; }
+  .order-head .oid{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:#8a7d63; }
+  .order-total{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--burgundy); font-weight:600; }
+  .order-items{ font-size:13px; margin-bottom:12px; }
+  .timeline{ display:flex; align-items:center; }
+  .tl-step{ flex:1; text-align:center; position:relative; }
+  .tl-dot{ width:20px; height:20px; border-radius:50%; background:var(--paper-line); margin:0 auto 5px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; }
+  .tl-step.done .tl-dot{ background:var(--burgundy); }
+  .tl-step.current .tl-dot{ background:var(--burgundy); box-shadow:0 0 0 4px #fff3e6; }
+  .tl-line{ position:absolute; top:10px; left:-50%; width:100%; height:2px; background:var(--paper-line); z-index:-1; }
+  .tl-step.done .tl-line, .tl-step.current .tl-line{ background:var(--burgundy); }
+  .tl-step:first-child .tl-line{ display:none; }
+  .tl-label{ font-family:'IBM Plex Mono', monospace; font-size:8px; text-transform:uppercase; color:#8a7d63; }
+  .tl-step.done .tl-label, .tl-step.current .tl-label{ color:var(--ink); font-weight:600; }
+  .order-eta{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--burgundy); margin-top:10px; text-align:center; }
+
+  footer{ background:var(--ink); color:var(--parchment); text-align:center; padding:26px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">LIBRERÍA <em>SIGLO XXI</em></div>
+    <nav><span>Catálogo</span><span>Novedades</span><span>Usados</span><span class="active">Mi cuenta</span><span>Contacto</span></nav>
+    <div class="header-actions"><span class="btn-ghost">Belén R. ▾</span><span>🛒 0</span></div>
+  </header>
+
+  <div class="page-head">
+    <h1>Hola, Belén</h1>
+    <div class="sub">Plan Plata · socia desde 03/2025</div>
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+      <h3>📚 Tu chequera de préstamo <span class="badge">EN PRÉSTAMO · vence en 12 días</span></h3>
+      <div class="stub-row">
+        <div class="stub filled"><div class="stub-num">01</div><div class="stub-icon">✓</div><div class="stub-title">Rayuela<br>devuelto</div></div>
+        <div class="stub filled"><div class="stub-num">02</div><div class="stub-icon">✓</div><div class="stub-title">Ficciones<br>devuelto</div></div>
+        <div class="stub filled"><div class="stub-num">03</div><div class="stub-icon">✓</div><div class="stub-title">Pedro Páramo<br>devuelto</div></div>
+        <div class="stub current"><div class="stub-num">04</div><div class="stub-icon">⏳</div><div class="stub-title">El Aleph<br>vence 21/08</div></div>
+        <div class="stub empty"><div class="stub-num">05</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+        <div class="stub empty"><div class="stub-num">06</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+        <div class="stub empty"><div class="stub-num">07</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+        <div class="stub empty"><div class="stub-num">08</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+        <div class="stub empty"><div class="stub-num">09</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+        <div class="stub empty"><div class="stub-num">10</div><div class="stub-icon">—</div><div class="stub-title">Vacante</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Sellos de fidelización <span class="badge">6 / 10</span></h3>
+      <div class="sellos-dots">
+        <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+        <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+        <div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div>
+      </div>
+      <div class="mono" style="font-size:12px;">Te faltan <strong>4 compras</strong> para tu bono del <strong>50% OFF</strong>.</div>
+    </div>
+
+    <div class="card">
+      <h3>Mis pedidos</h3>
+
+      <div style="border-top:1px dashed var(--paper-line); padding-top:16px; margin-bottom:20px;">
+        <div class="order-head">
+          <div><strong class="mono" style="font-size:12px;">Pedido #0148</strong><div class="oid">08/08/2026 · Retiro en el local</div></div>
+          <div class="order-total">$24.200</div>
+        </div>
+        <div class="order-items">El Aleph · Rayuela</div>
+        <div class="timeline">
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">Pagado</div></div>
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">Preparando</div></div>
+          <div class="tl-step current"><div class="tl-line"></div><div class="tl-dot">●</div><div class="tl-label">Listo</div></div>
+          <div class="tl-step"><div class="tl-line"></div><div class="tl-dot">·</div><div class="tl-label">Entregado</div></div>
+        </div>
+        <div class="order-eta">📍 Te esperamos en el local — sin vencimiento para pasarlo a buscar.</div>
+      </div>
+
+      <div>
+        <div class="order-head">
+          <div><strong class="mono" style="font-size:12px;">Pedido #0142</strong><div class="oid">03/08/2026 · Envío a domicilio</div></div>
+          <div class="order-total">$14.900</div>
+        </div>
+        <div class="order-items">Ficciones</div>
+        <div class="timeline">
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">Pagado</div></div>
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">Preparando</div></div>
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">En camino</div></div>
+          <div class="tl-step done"><div class="tl-line"></div><div class="tl-dot">✓</div><div class="tl-label">Entregado</div></div>
+        </div>
+        <div class="order-eta">✓ Entregado el 06/08/2026</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>LIBRERÍA SIGLO XXI · GRACIAS POR ELEGIRNOS</footer>
+
+</body>
+</html>
