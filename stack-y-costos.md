@@ -3,7 +3,7 @@
 ## 1. Arquitectura general del proyecto
 
 ```
-                    ┌────────────────────────┐
+                    ┌─────────────────────────┐
                     │   CATÁLOGO MAESTRO       │
                     │ (título, ISBN, precio,   │
                     │  stock, origen, portada) │
