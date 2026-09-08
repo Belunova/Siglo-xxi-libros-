@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo — Siglo XXI Libros</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#454340; --parchment:#f2ddc8; --burgundy:#8a3d33;
+    --paper-line:#d8bfa0; --panel:#fffaf0;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Inter',sans-serif; background:var(--parchment); color:var(--ink); }
+  .display{font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  header{
+    background:var(--ink); color:var(--parchment); padding:20px 40px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+    border-bottom:3px solid var(--burgundy);
+  }
+  .logo{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:20px; letter-spacing:0.5px; }
+  .logo em{ color:#d8bfa0; font-style:normal; font-weight:400; }
+  nav{ display:flex; gap:28px; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+  nav span.active{ color:#d8bfa0; border-bottom:2px solid var(--burgundy); padding-bottom:4px; }
+  .header-actions{ display:flex; gap:16px; align-items:center; font-size:13px; }
+  .btn-ghost{ border:1px solid #d8bfa0; color:var(--parchment); padding:7px 16px; border-radius:2px; letter-spacing:0.5px; }
+
+  .page-head{
+    padding:34px 40px 18px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:14px;
+  }
+  .page-head h1{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:26px; margin:0; }
+  .page-head .count{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--burgundy); }
+
+  .search-bar{
+    padding:0 40px 20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+  }
+  .search-bar input{
+    flex:1; min-width:240px; border:1.5px solid var(--paper-line); border-radius:4px;
+    padding:11px 14px; font-family:'Inter',sans-serif; font-size:14px; background:var(--panel); color:var(--ink);
+  }
+  .sort-select{
+    border:1.5px solid var(--paper-line); border-radius:4px; padding:11px 14px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; background:var(--panel); color:var(--ink);
+  }
+
+  .body-grid{ display:grid; grid-template-columns:230px 1fr; gap:28px; padding:0 40px 50px; }
+  @media(max-width:820px){ .body-grid{ grid-template-columns:1fr; } }
+
+  .filters{ background:var(--panel); border:1px solid var(--paper-line); padding:20px; align-self:start; }
+  .filters h4{
+    font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:12px; letter-spacing:1px;
+    margin:0 0 12px; color:var(--burgundy); border-bottom:1px dashed var(--paper-line); padding-bottom:8px;
+  }
+  .filter-group{ margin-bottom:24px; }
+  .filter-opt{ display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:9px; }
+  .chk{ width:15px; height:15px; border:1.5px solid var(--paper-line); border-radius:3px; flex-shrink:0; }
+  .chk.on{ background:var(--burgundy); border-color:var(--burgundy); }
+  .filter-opt .n{ margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:10px; color:#9a8d73; }
+  .price-range{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono', monospace; font-size:12px; }
+  .price-range input{ width:70px; border:1px solid var(--paper-line); border-radius:3px; padding:5px 6px; font-family:'IBM Plex Mono', monospace; font-size:11px; }
+  .btn-clear{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--burgundy); text-decoration:underline; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(170px,1fr)); gap:22px; align-content:start; }
+  .card{ background:var(--panel); border:1px solid var(--paper-line); }
+  .cover{ height:155px; display:flex; align-items:center; justify-content:center; color:#fff; font-family:'IBM Plex Mono', monospace; font-size:11px; position:relative; }
+  .cover .fav{ position:absolute; top:8px; right:8px; font-size:15px; opacity:0.85; }
+  .card-body{ padding:12px 14px; }
+  .tag{ display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:9px; letter-spacing:0.4px; background:var(--burgundy); color:#fff; padding:2px 6px; margin-bottom:6px; }
+  .tag.usado{ background:#8a7d63; }
+  .tag.consegu{ background:#5a6b8a; }
+  .tag.agotado{ background:var(--ink); }
+  .title{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:13px; margin-bottom:2px; line-height:1.25; }
+  .author{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6b6250; margin-bottom:8px; }
+  .price-row{ display:flex; justify-content:space-between; align-items:center; }
+  .price{ font-size:14px; font-weight:600; color:var(--burgundy); }
+  .add-btn{ background:var(--ink); color:#fff; border:none; padding:5px 9px; font-family:'IBM Plex Mono', monospace; font-size:14px; cursor:default; }
+  .add-btn.disabled{ background:var(--paper-line); color:#9a8d73; }
+
+  .pagination{ display:flex; justify-content:center; gap:8px; padding:34px 40px 50px; font-family:'IBM Plex Mono', monospace; font-size:12px; }
+  .pg{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid var(--paper-line); }
+  .pg.active{ background:var(--burgundy); color:#fff; border-color:var(--burgundy); }
+
+  footer{ background:var(--ink); color:var(--parchment); text-align:center; padding:26px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">LIBRERÍA <em>SIGLO XXI</em></div>
+    <nav>
+      <span class="active">Catálogo</span><span>Novedades</span><span>Usados</span><span>Contacto</span>
+    </nav>
+    <div class="header-actions">
+      <span class="btn-ghost">Ingresar</span>
+      <span>🛒 2</span>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <h1>Catálogo completo</h1>
+    <div class="count">128 resultados</div>
+  </div>
+
+  <div class="search-bar">
+    <input placeholder="Buscar por título, autor o ISBN...">
+    <select class="sort-select">
+      <option>Ordenar: Relevancia</option>
+      <option>Precio: menor a mayor</option>
+      <option>Precio: mayor a menor</option>
+      <option>Novedades primero</option>
+    </select>
+  </div>
+
+  <div class="body-grid">
+
+    <!-- FILTROS -->
+    <aside class="filters">
+      <div class="filter-group">
+        <h4>Disponibilidad</h4>
+        <div class="filter-opt"><div class="chk on"></div> Stock local <span class="n">64</span></div>
+        <div class="filter-opt"><div class="chk"></div> Conseguible · 3-7 días <span class="n">41</span></div>
+        <div class="filter-opt"><div class="chk"></div> Usado / Canje <span class="n">23</span></div>
+      </div>
+      <div class="filter-group">
+        <h4>Categoría</h4>
+        <div class="filter-opt"><div class="chk on"></div> Literatura <span class="n">88</span></div>
+        <div class="filter-opt"><div class="chk"></div> Infantil <span class="n">19</span></div>
+        <div class="filter-opt"><div class="chk"></div> Textos escolares <span class="n">14</span></div>
+        <div class="filter-opt"><div class="chk"></div> Revistas <span class="n">7</span></div>
+      </div>
+      <div class="filter-group">
+        <h4>Precio</h4>
+        <div class="price-range"><input value="0"> — <input value="25.000"></div>
+      </div>
+      <div class="btn-clear">Limpiar filtros</div>
+    </aside>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a3d33,#454340);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag">Stock local</span>
+          <div class="title">Cien Años de Soledad</div>
+          <div class="author">G. García Márquez</div>
+          <div class="price-row"><span class="price">$18.500</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#454340,#8a3d33);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag">Stock local</span>
+          <div class="title">El Aleph</div>
+          <div class="author">J. L. Borges</div>
+          <div class="price-row"><span class="price">$15.200</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#6b6250,#8a3d33); opacity:0.55;">Portada</div>
+        <div class="card-body">
+          <span class="tag agotado">Sin ejemplares</span>
+          <div class="title">Rayuela</div>
+          <div class="author">J. Cortázar</div>
+          <div class="price-row"><span class="price" style="color:#9a8d73;">$9.000</span><span class="add-btn disabled">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#5a6b8a,#454340);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag consegu">Conseguible · 3-7 días</span>
+          <div class="title">Los de Abajo</div>
+          <div class="author">M. Azuela</div>
+          <div class="price-row"><span class="price">$11.300</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#454340,#5a6b8a);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag">Stock local</span>
+          <div class="title">Ficciones</div>
+          <div class="author">J. L. Borges</div>
+          <div class="price-row"><span class="price">$14.900</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a7d63,#454340);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag usado">Usado</span>
+          <div class="title">Pedro Páramo</div>
+          <div class="author">J. Rulfo</div>
+          <div class="price-row"><span class="price">$7.500</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a3d33,#5a6b8a);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag consegu">Conseguible · 3-7 días</span>
+          <div class="title">Bestiario</div>
+          <div class="author">J. Cortázar</div>
+          <div class="price-row"><span class="price">$14.800</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#454340,#8a7d63);">Portada<span class="fav">♡</span></div>
+        <div class="card-body">
+          <span class="tag usado">Canje</span>
+          <div class="title">Revista Ñ — Agosto</div>
+          <div class="author">Edición mensual</div>
+          <div class="price-row"><span class="price">$4.500</span><span class="add-btn">+</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="pg active">1</div><div class="pg">2</div><div class="pg">3</div><div class="pg">→</div>
+  </div>
+
+  <footer>LIBRERÍA SIGLO XXI · GRACIAS POR ELEGIRNOS</footer>
+
+</body>
+</html>
