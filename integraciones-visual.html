@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cómo funciona todo, junto — Siglo XXI Libros</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#454340; --parchment:#f2ddc8; --burgundy:#8a3d33;
+    --paper-line:#d8bfa0; --panel:#fffaf0; --info:#3f5a80; --ok:#3f6b4f;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Inter',sans-serif; background:var(--parchment); color:var(--ink); }
+  .display{font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  header{
+    background:var(--ink); color:var(--parchment); padding:26px 40px; text-align:center;
+    border-bottom:3px solid var(--burgundy);
+  }
+  header .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:2px; color:#d8bfa0; margin-bottom:8px; }
+  header h1{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:28px; margin:0; }
+  header p{ font-family:'Inter',sans-serif; font-size:13px; color:#d8bfa0; margin-top:8px; }
+
+  .flow{ padding:50px 30px 20px; max-width:1100px; margin:0 auto; }
+
+  .row{ display:flex; justify-content:center; gap:22px; flex-wrap:wrap; margin-bottom:8px; }
+  .arrow-row{ display:flex; justify-content:center; padding:6px 0; }
+  .arrow{ font-size:22px; color:var(--burgundy); }
+
+  .node{
+    background:var(--panel); border:1.5px solid var(--paper-line); border-radius:6px;
+    padding:14px 18px; text-align:center; min-width:150px; position:relative;
+  }
+  .node .icon{ font-size:22px; margin-bottom:6px; display:block; }
+  .node .name{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:12px; letter-spacing:0.3px; }
+  .node .tag{ font-family:'IBM Plex Mono', monospace; font-size:9px; color:var(--burgundy); margin-top:3px; }
+
+  .node.central{ background:var(--burgundy); border-color:var(--burgundy); color:#fff; min-width:220px; padding:20px 24px; }
+  .node.central .name{ font-size:15px; }
+  .node.central .tag{ color:#f0d9c4; }
+
+  .node.source{ border-style:dashed; }
+
+  .branch{ display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin-top:6px; }
+  .branch-col{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .branch-col .arrow{ font-size:18px; }
+
+  .section-label{
+    text-align:center; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:1px;
+    color:#8a7d63; text-transform:uppercase; margin:36px 0 14px;
+  }
+
+  /* CARDS de integraciones */
+  .cards{ padding:20px 40px 10px; max-width:1100px; margin:0 auto; }
+  .cards h2{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:20px; border-bottom:1px solid var(--ink); padding-bottom:10px; margin-bottom:24px; }
+  .card-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:18px; }
+  .icard{ background:var(--panel); border:1px solid var(--paper-line); padding:18px 20px; }
+  .icard .top{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .icard .emoji{ font-size:20px; }
+  .icard .title{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:13px; }
+  .icard .desc{ font-size:12.5px; line-height:1.5; color:#4a4236; }
+  .icard .cost{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--burgundy); margin-top:8px; display:inline-block; background:#fff3e6; padding:2px 8px; border-radius:8px; }
+
+  /* COSTOS */
+  .cost-strip{ background:var(--ink); color:var(--parchment); padding:36px 40px; margin-top:50px; }
+  .cost-strip h2{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:18px; text-align:center; margin:0 0 24px; }
+  .cost-total{ text-align:center; margin-bottom:24px; }
+  .cost-total .amount{ font-family:'Oswald', sans-serif; font-size:38px; color:#f0d9c4; }
+  .cost-total .label{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:#c7bba3; }
+  .cost-grid{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; max-width:900px; margin:0 auto; }
+  .cost-item{ background:#5a5651; padding:10px 16px; border-radius:4px; text-align:center; min-width:110px; }
+  .cost-item .n{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:#fff; }
+  .cost-item .l{ font-family:'Inter',sans-serif; font-size:10px; color:#c7bba3; margin-top:2px; }
+
+  footer{ background:var(--ink); color:var(--parchment); text-align:center; padding:22px; font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:1px; border-top:1px solid #5a5651; }
+
+  /* PANTALLAS REALES EMBEBIDAS */
+  .screens-section{ padding:20px 40px 10px; max-width:1150px; margin:0 auto; }
+  .screens-section h2{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:20px; border-bottom:1px solid var(--ink); padding-bottom:10px; margin-bottom:8px; }
+  .screens-note{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:#8a7d63; margin-bottom:26px; }
+  .screens-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
+  @media(max-width:900px){ .screens-grid{ grid-template-columns:1fr; } }
+
+  .screen-card{ background:var(--panel); border:1px solid var(--paper-line); }
+  .screen-label{ padding:12px 16px; border-bottom:1px dashed var(--paper-line); }
+  .screen-label .who{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--burgundy); text-transform:uppercase; letter-spacing:0.5px; }
+  .screen-label .what{ font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:14px; margin-top:2px; }
+
+  .browser-chrome{ background:#e3d8c4; padding:6px 10px; display:flex; gap:5px; align-items:center; }
+  .browser-chrome span{ width:8px; height:8px; border-radius:50%; background:#c7b494; }
+
+  .frame-wrap{ width:100%; height:210px; overflow:hidden; position:relative; background:#fff; }
+  .frame-wrap iframe{
+    width:1300px; height:900px; border:none;
+    transform:scale(0.255); transform-origin:top left;
+    pointer-events:none;
+  }
+  .frame-open{
+    display:block; text-align:center; padding:10px; font-family:'IBM Plex Mono', monospace;
+    font-size:10px; letter-spacing:0.5px; color:var(--burgundy); text-decoration:none;
+    border-top:1px dashed var(--paper-line); text-transform:uppercase;
+  }
+
+  @media(max-width:700px){
+    .row{ flex-direction:column; align-items:center; }
+    .branch{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="eyebrow">— Siglo XXI Libros —</div>
+    <h1>Cómo funciona todo, junto</h1>
+    <p>Un solo mapa: de dónde viene cada dato, adónde va, y quién se entera de qué</p>
+  </header>
+
+  <div class="flow">
+
+    <!-- FUENTES -->
+    <div class="row">
+      <div class="node source"><span class="icon">📚</span><div class="name">Dalsa</div><div class="tag">Catálogo proveedor</div></div>
+      <div class="node source"><span class="icon">🏪</span><div class="name">Mostrador</div><div class="tag">Canje, usados, ISBN</div></div>
+      <div class="node source"><span class="icon">📖</span><div class="name">Google Books</div><div class="tag">Portada + sinopsis</div></div>
+    </div>
+
+    <div class="arrow-row"><span class="arrow">↓ ↓ ↓</span></div>
+
+    <!-- CENTRO: MAKE + AIRTABLE -->
+    <div class="row">
+      <div class="node central">
+        <span class="icon">🗂️</span>
+        <div class="name">Catálogo Maestro</div>
+        <div class="tag">Airtable — vía Make</div>
+      </div>
+    </div>
+
+    <div class="arrow-row"><span class="arrow">↓</span></div>
+
+    <!-- SALIDAS: 3 sistemas -->
+    <div class="branch">
+      <div class="branch-col">
+        <div class="node"><span class="icon">🛒</span><div class="name">WooCommerce</div><div class="tag">Tienda online</div></div>
+        <span class="arrow">↓</span>
+        <div class="node" style="min-width:120px;"><span class="icon">💳</span><div class="name">Mercado Pago</div><div class="tag">Cobro</div></div>
+      </div>
+      <div class="branch-col">
+        <div class="node"><span class="icon">🔎</span><div class="name">Panel Interno</div><div class="tag">Vendedora — Airtable</div></div>
+        <span class="arrow">↓</span>
+        <div class="node" style="min-width:120px;"><span class="icon">📦</span><div class="name">Pedidos y stock</div><div class="tag">Ventas local + web</div></div>
+      </div>
+      <div class="branch-col">
+        <div class="node"><span class="icon">🎫</span><div class="name">Cuenta Socia</div><div class="tag">Dentro de WooCommerce</div></div>
+        <span class="arrow">↓</span>
+        <div class="node" style="min-width:120px;"><span class="icon">📚</span><div class="name">Chequera + Sellos</div><div class="tag">Préstamo + fidelización</div></div>
+      </div>
+    </div>
+
+    <div class="arrow-row"><span class="arrow">↓</span></div>
+
+    <div class="row">
+      <div class="node" style="min-width:260px; border-color:var(--burgundy);">
+        <span class="icon">📲</span>
+        <div class="name">Avisos automáticos</div>
+        <div class="tag">WhatsApp o Mail — según canal preferido de cada persona</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cards">
+    <h2>Cada pieza, explicada</h2>
+    <div class="card-grid">
+
+      <div class="icard">
+        <div class="top"><span class="emoji">🗂️</span><span class="title">Airtable</span></div>
+        <div class="desc">El corazón de datos: catálogo, socias, préstamos, sellos, ventas. Lo que la vendedora usa todos los días.</div>
+        <span class="cost">~US$20-24/mes</span>
+      </div>
+
+      <div class="icard">
+        <div class="top"><span class="emoji">🔀</span><span class="title">Make</span></div>
+        <div class="desc">El "cerebro invisible": scrapea Dalsa, detecta mails de pedido, sincroniza stock entre WooCommerce y Airtable, dispara avisos.</div>
+        <span class="cost">~US$10,59/mes</span>
+      </div>
+
+      <div class="icard">
+        <div class="top"><span class="emoji">🛒</span><span class="title">WooCommerce</span></div>
+        <div class="desc">La tienda: catálogo público, carrito, checkout, cupones. Sobre WordPress — probado, con buen SEO.</div>
+        <span class="cost">Gratis (open source)</span>
+      </div>
+
+      <div class="icard">
+        <div class="top"><span class="emoji">💳</span><span class="title">Mercado Pago</span></div>
+        <div class="desc">Cobra online — tarjeta, transferencia, efectivo en punto de pago. Plugin oficial, sin desarrollo custom.</div>
+        <span class="cost">~4% + IVA por venta</span>
+      </div>
+
+      <div class="icard">
+        <div class="top"><span class="emoji">📖</span><span class="title">Google Books</span></div>
+        <div class="desc">Con solo el ISBN trae portada, sinopsis, editorial y año. Nadie carga eso a mano.</div>
+        <span class="cost">Gratis</span>
+      </div>
+
+      <div class="icard">
+        <div class="top"><span class="emoji">📲</span><span class="title">WhatsApp / Mail</span></div>
+        <div class="desc">Avisos de vencimiento, sellos, pedidos listos y ventas nuevas — por el canal que cada persona eligió.</div>
+        <span class="cost">Variable / incluido</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cost-strip">
+    <h2>Costo mensual estimado — MVP de venta</h2>
+    <div class="cost-total">
+      <div class="amount">US$ 41 – 60 / mes</div>
+      <div class="label">infraestructura y licencias — sin incluir diseño/implementación</div>
+    </div>
+    <div class="cost-grid">
+      <div class="cost-item"><div class="n">Airtable</div><div class="l">~$20-24</div></div>
+      <div class="cost-item"><div class="n">Hosting</div><div class="l">~$10-25</div></div>
+      <div class="cost-item"><div class="n">Make</div><div class="l">~$10,59</div></div>
+      <div class="cost-item"><div class="n">WooCommerce</div><div class="l">Gratis</div></div>
+      <div class="cost-item"><div class="n">Google Books</div><div class="l">Gratis</div></div>
+      <div class="cost-item"><div class="n">Mercado Pago</div><div class="l">~4% por venta</div></div>
+    </div>
+  </div>
+
+  <footer>LIBRERÍA SIGLO XXI · PROPUESTA TÉCNICA · NOVAH</footer>
+
+</body>
+</html>
