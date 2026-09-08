@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Librería — Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#454340;
+    --parchment:#f2ddc8;
+    --burgundy:#8a3d33;
+    --brass:#454340;
+    --charcoal:#454340;
+    --paper-line:#d8bfa0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--parchment);
+    color:var(--charcoal);
+  }
+  .display{font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* HEADER */
+  header{
+    background:var(--ink);
+    color:var(--parchment);
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    border-bottom:3px solid var(--brass);
+  }
+  .logo{
+    font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px;
+    font-size:22px;
+    letter-spacing:0.5px;
+  }
+  .logo em{ color:var(--brass); font-style:italic; }
+  nav{ display:flex; gap:28px; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+  nav span{ cursor:default; opacity:0.85; }
+  .header-actions{ display:flex; gap:16px; align-items:center; font-size:13px; }
+  .btn-ghost{
+    border:1px solid var(--brass); color:var(--parchment);
+    padding:7px 16px; border-radius:2px; letter-spacing:0.5px;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    padding:70px 40px 60px;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(176,141,87,0.18), transparent 45%),
+      var(--parchment);
+    border-bottom:1px dashed var(--paper-line);
+    text-align:left;
+  }
+  .hero-eyebrow{
+    display:inline-block;
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--burgundy);
+    border:1.5px solid var(--burgundy);
+    border-radius:14px;
+    padding:5px 14px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:44px;
+    line-height:1.15;
+    margin:0 0 16px;
+    max-width:600px;
+  }
+  .hero p{
+    max-width:460px;
+    font-size:15px;
+    color:#4a4236;
+    margin-bottom:28px;
+  }
+  .btn-primary{
+    display:inline-block;
+    background:var(--burgundy);
+    color:var(--parchment);
+    padding:14px 30px;
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-decoration:none;
+  }
+  .btn-secondary{
+    display:inline-block;
+    background:transparent;
+    color:var(--burgundy);
+    border:1.5px solid var(--burgundy);
+    padding:12.5px 26px;
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-decoration:none;
+    margin-left:14px;
+  }
+
+  /* CHEQUERA — signature element */
+  .chequera-wrap{
+    margin:0 40px 60px;
+    background:#fffaf0;
+    border:1px solid var(--paper-line);
+    box-shadow:0 2px 0 var(--brass);
+    position:relative;
+  }
+  .chequera-header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 24px;
+    border-bottom:1px dashed var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+  }
+  .chequera-header .titulo{
+    font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .chequera-header .badge{
+    background:var(--brass); color:#fff; padding:4px 10px; letter-spacing:1px;
+  }
+  .stub-row{
+    display:flex;
+    overflow-x:auto;
+  }
+  .stub{
+    flex:0 0 auto;
+    width:110px;
+    padding:16px 10px;
+    text-align:center;
+    border-right:1px dashed var(--paper-line);
+    position:relative;
+  }
+  .stub:last-child{ border-right:none; }
+  .stub-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--brass);
+    margin-bottom:8px;
+  }
+  .stub-icon{
+    width:34px; height:34px; margin:0 auto 8px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+  }
+  .stub.filled .stub-icon{ background:var(--burgundy); color:#fff; }
+  .stub.empty .stub-icon{ border:1.5px dashed var(--paper-line); color:var(--paper-line); }
+  .stub-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    line-height:1.3;
+    color:var(--charcoal);
+  }
+  .stub.empty .stub-title{ color:#b3a688; }
+
+  /* CATALOGO */
+  .section{ padding:10px 40px 60px; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:24px; flex-wrap:wrap; gap:10px;
+    border-bottom:1px solid var(--ink); padding-bottom:10px;
+  }
+  .section-head h2{ font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px; font-size:22px; margin:0; }
+  .section-head .sub{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--brass); }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+    gap:22px;
+  }
+  .card{ background:#fffaf0; border:1px solid var(--paper-line); }
+  .cover{
+    height:150px;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'IBM Plex Mono', monospace; font-size:11px;
+  }
+  .card-body{ padding:12px 14px; }
+  .card-body .tag{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:9px;
+    letter-spacing:0.5px; background:var(--burgundy); color:#fff; padding:2px 6px; margin-bottom:6px;
+  }
+  .card-body .tag.usado{ background:var(--brass); }
+  .card-body .title{ font-family:'Oswald', sans-serif; text-transform:uppercase; letter-spacing:0.5px; font-size:14px; margin-bottom:2px; }
+  .card-body .author{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6b6250; margin-bottom:8px; }
+  .card-body .price{ font-size:14px; font-weight:600; color:var(--burgundy); }
+
+  footer{
+    background:var(--ink); color:var(--parchment);
+    text-align:center; padding:26px; font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:1px;
+  }
+
+  /* CINTA DE FRASES — sello distintivo real de la marca */
+  .ribbon{
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        var(--burgundy),
+        var(--burgundy) 14px,
+        #7a352c 14px,
+        #7a352c 28px
+      );
+    padding:16px 20px 10px;
+    text-align:center;
+    border-top:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+  }
+  .ribbon-inner{
+    background:var(--parchment);
+    display:inline-block;
+    padding:10px 26px;
+    border:1px dashed var(--ink);
+  }
+  .ribbon-quote{
+    font-family:'Oswald', sans-serif;
+    font-weight:500;
+    font-style:italic;
+    font-size:15px;
+    color:var(--ink);
+    letter-spacing:0.2px;
+  }
+  .ribbon-author{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--burgundy);
+    margin-left:6px;
+  }
+  .ribbon-mark{ color:var(--brass); font-size:13px; }
+  .ribbon-caption{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.5px;
+    color:#f7ebd9;
+    margin-top:8px;
+    opacity:0.9;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">LIBRERÍA <em>Siglo XXI</em></div>
+    <nav>
+      <span>Catálogo</span><span>Novedades</span><span>Usados</span><span>Contacto</span>
+    </nav>
+    <div class="header-actions">
+      <span class="btn-ghost">Ingresar</span>
+      <span>🛒 2</span>
+    </div>
+  </header>
+
+  <div class="ribbon">
+    <div class="ribbon-inner">
+      <span class="ribbon-mark">✂ — </span>
+      <span class="ribbon-quote">"Un libro es un jardín que se lleva en el bolsillo."</span>
+      <span class="ribbon-author">— Prov. árabe</span>
+      <span class="ribbon-mark"> — ✂</span>
+    </div>
+    <div class="ribbon-caption">Una frase distinta en cada envoltorio, en cada bolsa, en cada pedido — así es Siglo XXI</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">— Desde 19XX, en el mismo barrio —</div>
+    <h1>Libros nuevos y usados,<br>a un clic de tu próxima lectura.</h1>
+    <p>Novedades, clásicos y joyitas de segunda mano — con envíos a todo el país.</p>
+    <a class="btn-primary" href="#">Ver catálogo completo</a>
+    <a class="btn-secondary" href="#">Conocé la librería</a>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Novedades esta semana</h2>
+      <div class="sub">Actualizado hoy</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a3d33,#454340);">Cien Años de Soledad</div>
+        <div class="card-body">
+          <span class="tag">Nuevo</span>
+          <div class="title">Cien Años de Soledad</div>
+          <div class="author">G. García Márquez</div>
+          <div class="price">$18.500</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#454340,#8a3d33);">El Aleph</div>
+        <div class="card-body">
+          <span class="tag" style="background:#8a7d63;">Conseguible · 3-7 días</span>
+          <div class="title">El Aleph</div>
+          <div class="author">J. L. Borges</div>
+          <div class="price">$15.200</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#6b6250,#8a3d33); opacity:0.5;">Rayuela</div>
+        <div class="card-body">
+          <span class="tag" style="background:var(--charcoal);">Sin ejemplares — 2/2 prestados</span>
+          <div class="title">Rayuela</div>
+          <div class="author">J. Cortázar</div>
+          <button style="width:100%; margin-top:8px; background:transparent; border:1.5px solid var(--burgundy); color:var(--burgundy); padding:8px; font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase;">Avisame cuando esté disponible</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a3d33,#454340);">Revista Ñ</div>
+        <div class="card-body">
+          <span class="tag usado">Canje</span>
+          <div class="title">Revista Ñ — Ago.</div>
+          <div class="author">Edición mensual</div>
+          <div class="price">$4.500</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0;">
+    <div class="section-head">
+      <h2>Los más vendidos</h2>
+      <div class="sub">esta semana en Siglo XXI</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#8a3d33,#454340);">Portada</div>
+        <div class="card-body">
+          <span class="tag" style="background:#8a7d63;">Conseguible · 3-7 días</span>
+          <div class="title">Bestiario</div>
+          <div class="author">J. Cortázar</div>
+          <div class="price">$14.800</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#454340,#8a3d33);">Portada</div>
+        <div class="card-body">
+          <span class="tag">Nuevo</span>
+          <div class="title">Los de Abajo</div>
+          <div class="author">M. Azuela</div>
+          <div class="price">$11.300</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cover" style="background:linear-gradient(160deg,#6b6250,#8a3d33);">Portada</div>
+        <div class="card-body">
+          <span class="tag usado">Usado</span>
+          <div class="title">Ficciones</div>
+          <div class="author">J. L. Borges</div>
+          <div class="price">$8.200</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>LIBRERÍA SIGLO XXI · GRACIAS POR ELEGIRNOS</footer>
+
+</body>
+</html>
